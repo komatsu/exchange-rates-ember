@@ -1,16 +1,18 @@
 import Ember from 'ember';
 import moment from 'moment';
+import { currencies } from '../helpers/constants';
 
 export default Ember.Controller.extend({
   queryParams:['base', 'symbols'],
   isLoading: true,
+  currencies: currencies,
 
   labels: Ember.computed('model', function() {
     return this.get('model').mapBy('label');
   }),
 
   values: Ember.computed('model', function() {
-    return this.get('model').mapBy('value');
+    return this.get('model').map(data => this._roundPrecision(data.value));
   }),
 
   legendLabel: Ember.computed('base', 'symbols', function() {
@@ -20,5 +22,54 @@ export default Ember.Controller.extend({
   startDateString: Ember.computed('labels', function() {
     const label = this.get('labels.firstObject');
     return moment(label).format('MMM DD YYYY');
-  })
+  }),
+
+  median: Ember.computed('values', function() {
+    const sortedValues = this.get('values').copy().sort();
+    const length = sortedValues.length;
+    let median;
+
+    if (length % 2) {
+      median = (sortedValues[length / 2] + sortedValues[length / 2 - 1]) / 2;
+    }
+    else {
+      median = sortedValues[Math.floor(length / 2)];
+    }
+
+    return this._roundPrecision(median);
+  }),
+
+  stdDev: Ember.computed('values', function() {
+    const values = this.get('values');
+    const sum = values.reduce((a, b) => a + b, 0);
+    const length = values.length;
+    const mean = sum / length;
+    const valuesMinusMeanSq = values.map(val => Math.pow(val - mean, 2));
+    const stddev = Math.sqrt(valuesMinusMeanSq.reduce((a, b) => a + b, 0) / length);
+    return this._roundPrecision(stddev);
+  }),
+
+  _roundPrecision: function(num, precision=5) {
+    return +(Math.round(`${num}e+${precision}`)  + `e-${precision}`);
+  },
+
+  actions: {
+    changeBase: function(newBase) {
+      this.set('base', newBase);
+    },
+
+    changeSymbol: function(newSymbol) {
+      this.set('symbols', newSymbol);
+    },
+
+    swap: function() {
+      const base = this.get('base');
+      const symbol = this.get('symbols');
+
+      this.setProperties({
+        base: symbol,
+        symbols: base
+      });
+    }
+  }
 });

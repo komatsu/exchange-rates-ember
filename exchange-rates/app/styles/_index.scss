@@ -3,3 +3,36 @@
   text-align: center;
   color: #333;
 }
+
+.index-selections {
+  display: flex;
+  margin-bottom: 8px;
+  justify-content: flex-end;
+  align-items: center;
+
+  h5 {
+    margin-right: 16px;
+  }
+  select, button{
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px #ddd;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  button {
+    margin: 0 8px;
+  }
+}
+
+.index-stats {
+  display: flex;
+  justify-content: flex-end;
+
+  .median {
+    margin-right: 16px;
+  }
+}

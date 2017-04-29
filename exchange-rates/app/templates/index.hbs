@@ -1,8 +1,38 @@
 <h1 class="index-title">{{base}}/{{symbols}} Exchange Rates From {{startDateString}}</h1>
+<div class="index-selections">
+  <h5>Choose Currencies:</h5>
+  <select class="currency-dropdown" onchange={{action "changeBase" value="target.value"}}>
+    {{#each currencies as |currency|}}
+      {{#if (eq base currency)}}
+        <option value="{{currency}}" selected="selected">{{currency}}</option>
+      {{else}}
+        <option value="{{currency}}">{{currency}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+  <button {{action "swap"}}>/</button>
+  <select class="currency-dropdown" onchange={{action "changeSymbol" value="target.value"}}>
+    {{#each currencies as |currency|}}
+      {{#if (eq symbols currency)}}
+        <option value="{{currency}}" selected="selected">{{currency}}</option>
+      {{else}}
+        <option value="{{currency}}">{{currency}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+</div>
 {{#if isLoading}}
   <div>
     {{loading-bars}}
   </div>
 {{else}}
   {{bar-graph labels=labels values=values legendLabel=legendLabel}}
+  <div class="index-stats">
+    <div class="median">
+      Median: {{median}}
+    </div>
+    <div>
+      Standard Deviation: {{stdDev}}
+    </div>
+  </div>
 {{/if}}
