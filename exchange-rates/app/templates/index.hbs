@@ -1,0 +1,8 @@
+<h1 class="index-title">{{base}}/{{symbols}} Exchange Rates From {{startDateString}}</h1>
+{{#if isLoading}}
+  <div>
+    {{loading-bars}}
+  </div>
+{{else}}
+  {{bar-graph labels=labels values=values legendLabel=legendLabel}}
+{{/if}}
