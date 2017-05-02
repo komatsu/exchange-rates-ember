@@ -3,9 +3,17 @@ import moment from 'moment';
 import { currencies } from '../helpers/constants';
 
 export default Ember.Controller.extend({
-  queryParams:['base', 'symbols'],
+  queryParams:['a', 'b'],
   isLoading: true,
   currencies: currencies,
+
+  base: Ember.computed('a', function() {
+    return this.get('a') || 'USD';
+  }),
+
+  symbols: Ember.computed('b', function() {
+    return this.get('b') || 'EUR';
+  }),
 
   labels: Ember.computed('model', function() {
     return this.get('model').mapBy('label');
@@ -55,11 +63,11 @@ export default Ember.Controller.extend({
 
   actions: {
     changeBase: function(newBase) {
-      this.set('base', newBase);
+      this.set('a', newBase);
     },
 
     changeSymbol: function(newSymbol) {
-      this.set('symbols', newSymbol);
+      this.set('b', newSymbol);
     },
 
     swap: function() {
@@ -67,8 +75,8 @@ export default Ember.Controller.extend({
       const symbol = this.get('symbols');
 
       this.setProperties({
-        base: symbol,
-        symbols: base
+        a: symbol,
+        b: base
       });
     }
   }

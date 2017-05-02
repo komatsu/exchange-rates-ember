@@ -3,7 +3,7 @@ Example Ember app to track exchange rates
 
 ```
 git clone git@github.com:komatsu/exchange-rates-ember.git
-cd exchange-rates
+cd exchange-rates-ember/exchange-rates
 npm install
 bower install
 ember server

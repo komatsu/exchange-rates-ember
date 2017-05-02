@@ -6,17 +6,17 @@ const NUM_DATES_BACK = 20;
 
 export default Ember.Route.extend({
   queryParams: {
-    base: { // numerator
+    a: { // numerator
       refreshModel: true
     },
-    symbols: { // denominator
+    b: { // denominator
       refreshModel: true
     }
   },
 
   model(params) {
-    const base = params.base || 'USD';
-    const symbols = params.symbols || 'EUR';
+    const base = params.a || 'USD';
+    const symbols = params.b || 'EUR';
     const dateFormat = 'YYYY-MM-DD';
     const dateStrings = [];
 
